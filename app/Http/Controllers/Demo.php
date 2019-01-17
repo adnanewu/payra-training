@@ -11,17 +11,25 @@ class Demo extends Controller
     {
     	return view('index');
     }
-    public function store(Request $req)
+    public function store(Request $request)
     {
-    	$input=$req->all();
-    	stud::create($input);
         
+       $this->validate($request,[
+        'house_hold_name'=>'required|min:10',
+        'father_name'=>'required|max:10',
+        'gender'=>'required|max:8']);
 
-    	return redirect('/')->with('msg','Insert Data Successfully');
+        $input=$request->all();
+    	stud::create($input);
+        return redirect('/')->with('msg','Insert Data Successfully');
+       
 
-
-
+      
     }
+
+
+
+    
     public function create()
     {
     	$data=stud::get();
@@ -37,12 +45,20 @@ class Demo extends Controller
     {
         $data=stud::where('id',$id)->first();
         return view('studedit',compact('data'));
+
     }
-    public function updateData(Request $req,$id)
+    public function updateData(Request $request,$id)
     {
-        $input=$req->all();
-        $data=stud::where('id',$id)->first();
-        $data->update($input);
-        return redirect('ListData');
+        
+        
+         
+         $input=$request->all();
+         $data=stud::where('id',$id)->first();
+         $data->update($input);
+         return redirect('ListData');
+         $this->validate($request,[
+        'house_hold_name'=>'required|min:10',
+        'father_name'=>'required|max:10',
+        'gender'=>'required|max:8']);
     }
 }
